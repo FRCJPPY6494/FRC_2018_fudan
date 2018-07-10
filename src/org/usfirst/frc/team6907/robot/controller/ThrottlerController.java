@@ -9,9 +9,9 @@ public class ThrottlerController extends BaseController{
 	private static final double EPS = 0.001;
 	
 	public static final double
-			HEIGHT_ZERO = 0.0,	
-			HEIGHT_LAUNCH = 0.013,
-			HEIGHT_HORIZONTAL = 0.03;
+			HEIGHT_ZERO = 0,	
+			HEIGHT_LAUNCH = 0,
+			HEIGHT_HORIZONTAL = 0;
 	
 	public static final double
 			HEIGHT_MANUAL_ADJUST=0.1;
@@ -50,6 +50,7 @@ public class ThrottlerController extends BaseController{
 	
 	public void runTeleOp(){
 		if(!mOI.isElevatorManualActivated()) {
+			System.out.println(Throttler.get().pidGet());
 			if(mLastManual) {
 				mThrottler.setStatic();
 			}else {
@@ -84,6 +85,7 @@ public class ThrottlerController extends BaseController{
 			mLastManual=true;
 		}
 		mLastManualAdjust=Math.abs(mOI.getThrottlerSpeed())>EPS;
+		
 	}
 
 	static class GotoPosCmd extends AutoCmd{

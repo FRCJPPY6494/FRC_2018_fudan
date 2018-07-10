@@ -11,6 +11,7 @@ import org.usfirst.frc.team6907.robot.controller.ClimberController;
 import org.usfirst.frc.team6907.robot.controller.DriveController;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
 import org.usfirst.frc.team6907.robot.controller.IntakerController;
+import org.usfirst.frc.team6907.robot.controller.ThrottlerController;
 import org.usfirst.frc.team6907.robot.devices.Camera;
 import org.usfirst.frc.team6907.robot.subsystems.Climber;
 import org.usfirst.frc.team6907.robot.subsystems.Drive;
@@ -18,6 +19,7 @@ import org.usfirst.frc.team6907.robot.subsystems.DriveOI;
 import org.usfirst.frc.team6907.robot.subsystems.Elevator;
 import org.usfirst.frc.team6907.robot.subsystems.Intaker;
 import org.usfirst.frc.team6907.robot.subsystems.OperateOI;
+import org.usfirst.frc.team6907.robot.subsystems.Throttler;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -41,6 +43,7 @@ public class Robot extends TimedRobot {
 		ElevatorController.get();
 		IntakerController.get();
 		ClimberController.get();
+		ThrottlerController.get();
 	}
 
 	@Override
@@ -56,6 +59,7 @@ public class Robot extends TimedRobot {
 			DriveController.get().initAuto(POS,isLeft);
 			IntakerController.get().initAuto(POS,isLeft);
 			ElevatorController.get().initAuto(POS,isLeft);
+			ThrottlerController.get().initAuto(POS);
 		}
 		mAutoStartTime=System.currentTimeMillis();
 	}
@@ -67,6 +71,7 @@ public class Robot extends TimedRobot {
 		ElevatorController.get().runAuto(autoElapsedTime);
 		IntakerController.get().runAuto(autoElapsedTime);
 		Climber.get().feedStop();
+		ThrottlerController.get().runAuto(autoElapsedTime);
 	}
 
 	@Override
@@ -74,6 +79,7 @@ public class Robot extends TimedRobot {
 		DriveController.get().stopAuto();
 		ElevatorController.get().stopAuto();
 		IntakerController.get().stopAuto();
+		ThrottlerController.get().stopAuto();
 		DriveOI.get();
 		OperateOI.get();
 	}
@@ -86,14 +92,17 @@ public class Robot extends TimedRobot {
 			Climber.get().feedStop();
 			Elevator.get().feedStop();
 			Intaker.get().feedStop();
+			Throttler.get().feedStop();
 		}else if(OperateOI.get().isModeClimb()) {
 			ClimberController.get().runTeleOp();
 			Elevator.get().feedStop();
 			Intaker.get().feedStop();
+			Throttler.get().feedStop();
 		}else {
 			ElevatorController.get().runTeleOp();
 			IntakerController.get().runTeleOp();
 			Climber.get().feedStop();
+			ThrottlerController.get().runTeleOp();
 		}	
 	}
 	
@@ -103,6 +112,7 @@ public class Robot extends TimedRobot {
 		DriveController.get().stopAuto();
 		ElevatorController.get().stopAuto();
 		IntakerController.get().stopAuto();
+		ThrottlerController.get().stopAuto();
 	}
 	
 	@Override
@@ -111,5 +121,6 @@ public class Robot extends TimedRobot {
 		Elevator.get().feedStop();
 		Intaker.get().stopMotor();
 		Climber.get().feedStop();
+		Throttler.get().feedStop();
 	}
 }

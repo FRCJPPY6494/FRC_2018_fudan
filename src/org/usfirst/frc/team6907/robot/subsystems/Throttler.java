@@ -2,28 +2,32 @@ package org.usfirst.frc.team6907.robot.subsystems;
 
 import org.usfirst.frc.team6907.robot.RobotMap;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Throttler implements PIDSource,PIDOutput{
+	/**Parameters*/
 	private static final double
-		FEED=0.05,
-		MAX_ACCELERATION_PER_MS=0.0015,	
-		MAX_ACCELERATION_DISCRETE=0.1,		
-		MAX_POWER=0.8,
-		MAX_POWER_MANUAL_UP=0.7,
-		MAX_POWER_MANUAL_DOWN=0.4,
-		HEIGHT_PER_ROTATION=0.01,
-		GEAR=3,
-		REST_BOUND=0.02,
-		SLOW_BOUND=0.2,
-		SLOW_BOUND_VELOCITY=0.13;
-	
+			
+			FEED=0.05,
+			MAX_ACCELERATION_PER_MS=0.0015,	
+			MAX_ACCELERATION_DISCRETE=0.1,		
+			MAX_POWER=0.8,
+			MAX_POWER_MANUAL_UP=0.6,
+			MAX_POWER_MANUAL_DOWN=0.3,
+			HEIGHT_PER_ROTATION=0.06,
+			GEAR=3,	
+			SIGNALS_PER_ROTATION=4096,
+			REST_BOUND=0.02,
+			SLOW_BOUND=0.2,
+			SLOW_BOUND_VELOCITY=0.13;
+			
 	private static final double MOTOR_DIRECTION=-1;
 	private static final boolean INVERTED=true;
 	
@@ -33,19 +37,19 @@ public class Throttler implements PIDSource,PIDOutput{
 	
 	private volatile double mLastSpeed;
 	private volatile long mLastTime;
-	
+		
 	private static Throttler sInstance;
 	
-	public static Throttler get(){
-		if(sInstance == null) sInstance = new Throttler(RobotMap.DEPLOYMENT_MOTOR);
+	public static Throttler get() {
+		if(sInstance==null) sInstance=new Throttler(RobotMap.DEPLOYMENT_MOTOR);
 		return sInstance;
 	}
 	
-	public Throttler(int deviceID){
-		mTalon = new WPI_TalonSRX(deviceID);
+	public Throttler(int deviceID) {
+		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
-		mTalon.setSelectedSensorPosition(0, 0, 0);
-		mPIDController = new PIDController(1, 0, 0, this, this);
+		mTalon.setSelectedSensorPosition(0,0,0);
+		mPIDController=new PIDController(2.8, 0.002,0.02,this,this);
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
@@ -53,10 +57,17 @@ public class Throttler implements PIDSource,PIDOutput{
 		mLastTime=System.currentTimeMillis();
 	}
 	
-	public void startPID() {
-		if(!mPIDEnabled) {	
+	public void reset() {
+		mTalon.setSelectedSensorPosition(0, 0, 0);
+	}
+	
+	public void gotoPos(double pos) {
+		if(isSensorPluggedIn()
+				&& (mPIDController.getSetpoint()!=pos || !mPIDController.isEnabled())) {
+			mPIDController.reset();
+			mPIDController.setSetpoint(pos);
 			mPIDEnabled=true;
-			mPIDController.enable();
+			mPIDController.enable();		
 		}
 	}
 	
@@ -69,9 +80,13 @@ public class Throttler implements PIDSource,PIDOutput{
 		setSpeed(input);
 	}
 	
-	public void reset() {
-		mTalon.setSelectedSensorPosition(0, 0, 0);
-	}
+	public void setStatic() {
+		if(isSensorPluggedIn()) {
+			gotoPos(pidGet());
+		}else {
+			setSpeed(FEED);
+		}
+	}	
 	
 	public void feedStop() {
 		mTalon.set(ControlMode.PercentOutput,0);
@@ -83,13 +98,19 @@ public class Throttler implements PIDSource,PIDOutput{
 		return mPIDEnabled;
 	}
 	
+	public void startPID() {
+		if(!mPIDEnabled) {	
+			mPIDEnabled=true;
+			mPIDController.enable();
+		}
+	}
+	
 	public void stopPID() {
 		if(mPIDEnabled) {	
 			mPIDEnabled=false;
 			mPIDController.disable();
 		}
 	}
-	
 	
 	@Override
 	public void setPIDSourceType(PIDSourceType pidSource) {}
@@ -104,10 +125,6 @@ public class Throttler implements PIDSource,PIDOutput{
 		return signalToMeter(mTalon.getSelectedSensorPosition(0));
 	}
 	
-	private static double signalToMeter(int count) {
-		return count*HEIGHT_PER_ROTATION/(7*4096);
-	}
-	
 	@Override
 	public void pidWrite(double output) {
 		if(isSensorPluggedIn()) {
@@ -115,24 +132,6 @@ public class Throttler implements PIDSource,PIDOutput{
 			setSpeed(boundSpeed(boundAcceleration(output)));
 		}else {
 			setStatic();
-		}
-	}
-	
-	public void setStatic() {
-		if(isSensorPluggedIn()) {
-			gotoPos(pidGet());
-		}else {
-			setSpeed(FEED);
-		}
-	}	
-	
-	public void gotoPos(double pos) {
-		if(isSensorPluggedIn()
-				&& (mPIDController.getSetpoint()!=pos || !mPIDController.isEnabled())) {
-			mPIDController.reset();
-			mPIDController.setSetpoint(pos);
-			mPIDEnabled=true;
-			mPIDController.enable();		
 		}
 	}
 	
@@ -161,11 +160,32 @@ public class Throttler implements PIDSource,PIDOutput{
 	private void setSpeed(double speed) {
 		mLastSpeed=speed;
 		mLastTime=System.currentTimeMillis();
-		mTalon.set(ControlMode.PercentOutput,speed*MOTOR_DIRECTION);
+		mTalon.set(ControlMode.PercentOutput, speed*MOTOR_DIRECTION);
+	}
+
+	private static double signalToMeter(int count) {
+		return count*HEIGHT_PER_ROTATION/(GEAR*SIGNALS_PER_ROTATION);
 	}
 	
 	private boolean isSensorPluggedIn() {
 		return mTalon.getSensorCollection().getPulseWidthRiseToRiseUs()!=0;	
 	}
 	
+	public void log() {
+		SmartDashboard.putNumber("Elevator.Height", pidGet());
+	}
+	
+	/*
+	private void setLED() {
+		double speed=signalToMeter(mTalon.getSelectedSensorVelocity(0));
+		if(Math.abs(speed)<0.003) {
+			mLED.setMode(ArduinoLEDStrip.MODE_NORMAL);
+		}else if (speed>0) {
+			mLED.setMode(ArduinoLEDStrip.MODE_ELEVATE_UP);
+		}else {
+			mLED.setMode(ArduinoLEDStrip.MODE_ELEVATE_DOWN);
+		}
+	}
+}
+*/
 }
