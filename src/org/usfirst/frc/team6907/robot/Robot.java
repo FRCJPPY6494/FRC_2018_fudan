@@ -6,18 +6,13 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team6907.robot;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> 810da4034437e585d72cf30c4f641303c635ec3c
-=======
->>>>>>> 810da4034437e585d72cf30c4f641303c635ec3c
 import org.usfirst.frc.team6907.robot.controller.ClimberController;
 import org.usfirst.frc.team6907.robot.controller.DriveController;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
 import org.usfirst.frc.team6907.robot.controller.IntakerController;
 import org.usfirst.frc.team6907.robot.controller.ThrottlerController;
+import org.usfirst.frc.team6907.robot.devices.Camera;
 import org.usfirst.frc.team6907.robot.subsystems.Climber;
 import org.usfirst.frc.team6907.robot.subsystems.Drive;
 import org.usfirst.frc.team6907.robot.subsystems.DriveOI;
@@ -26,14 +21,6 @@ import org.usfirst.frc.team6907.robot.subsystems.Intaker;
 import org.usfirst.frc.team6907.robot.subsystems.OperateOI;
 import org.usfirst.frc.team6907.robot.subsystems.Throttler;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 810da4034437e585d72cf30c4f641303c635ec3c
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
->>>>>>> 810da4034437e585d72cf30c4f641303c635ec3c
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 
