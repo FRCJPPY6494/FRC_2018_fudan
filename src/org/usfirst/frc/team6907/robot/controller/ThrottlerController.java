@@ -13,6 +13,9 @@ public class ThrottlerController extends BaseController{
 			HEIGHT_LAUNCH = 0.013,
 			HEIGHT_HORIZONTAL = 0.03;
 	
+	public static final double
+			HEIGHT_MANUAL_ADJUST=0.1;
+	
 	public static ThrottlerController mInstance;
 	
 	private OperateOI mOI;
@@ -46,24 +49,43 @@ public class ThrottlerController extends BaseController{
 	}
 	
 	public void runTeleOp(){
-		if(!mOI.isIntakerManualActivated()) {
-			if(mOI.getIntakerResetToVertical()) {
-				mThrottler.resetToVertical();
-			}else if(mOI.getIntakerProtect()) {
-				mThrottler.gotoVertical();
-			}else if(mOI.getIntakerShootPrep()) {
-				mThrottler.gotoShootPitch();
-			}else if(mOI.getIntakerTakeIn()) {
-				mThrottler.gotoHorizontal();
-			}else if(mOI.getIntakerAdjustDownwards()) {
-				mThrotter.adjustDownwards();
+		if(!mOI.isElevatorManualActivated()) {
+			if(mLastManual) {
+				mThrottler.setStatic();
+			}else {
+				mThrottler.startPID();
+				switch (mOI.getThrottlerSetPoint()) {
+					case OperateOI.THROTTLER_ZERO:
+						mThrottler.gotoPos(HEIGHT_ZERO);
+						break;
+					case OperateOI.THROTTLER_LAUNCH:
+						mThrottler.gotoPos(HEIGHT_LAUNCH);
+						break;	
+					case OperateOI.THROTTLER_HORIZONTAL:
+						mThrottler.gotoPos(HEIGHT_HORIZONTAL);
+						break;
+				}
+				if(Math.abs(mOI.getThrottlerSpeed())>EPS 
+						&& !mLastManualAdjust) {
+					mThrottler.gotoRelativePos(
+							(mOI.getThrottlerSpeed()>0?1:-0.5)*HEIGHT_MANUAL_ADJUST);
+				}
+				if(!mThrottler.getPIDEnabled()) mThrottler.setStatic();
 			}
+			mLastManual=false;
 		}else {
-			mThrottler.setRawIntakerPitch(mOI.getIntakerPitchSpeed());
-		}		
-		mThrottler.setRawIntakerSpeed(mOI.getIntakerSpeed());
+			double input=mOI.getThrottlerSpeed();
+			if(Math.abs(input)<EPS) {
+				if(!mThrottler.getPIDEnabled()) mThrottler.setStatic();
+			} else {
+				mThrottler.stopPID();
+				mThrottler.manualControl(input);
+			}
+			mLastManual=true;
+		}
+		mLastManualAdjust=Math.abs(mOI.getThrottlerSpeed())>EPS;
 	}
-	
+
 	static class GotoPosCmd extends AutoCmd{
 		private double mPosition;
 		public GotoPosCmd(long startTimestamp,double pos) {

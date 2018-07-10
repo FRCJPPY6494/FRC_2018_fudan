@@ -23,7 +23,12 @@ public class OperateOI {
 			ELEVATOR_SWITCH=1,
 			ELEVATOR_SCALE_LOW=2,
 			ELEVATOR_SCALE_MIDDLE=3,
-			ELEVATOR_SCALE_HIGH=4;
+			ELEVATOR_SCALE_HIGH=4,
+			THROTTLER_ZERO = 5,
+			THROTTLER_LAUNCH = 6,
+			THROTTLER_HORIZONTAL = 7;
+			
+			
 	
 	private static OperateOI sInstance;
 	
@@ -81,32 +86,25 @@ public class OperateOI {
 		return -1;
 	}
 	
+	public int getThrottlerSetPoint() {
+			if(mXboxController.getYButton()) return THROTTLER_ZERO;
+			else if(mXboxController.getBButton()) return THROTTLER_LAUNCH;
+			else if(mXboxController.getAButton()) return THROTTLER_HORIZONTAL;
+			return -1;
+	}
+	
 	public double getElevatorSpeed() {
 		return -Calc.eliminateDeadband(mXboxController.getY(Hand.kLeft),DEADBAND);
+	}
+	
+	public double getThrottlerSpeed() {
+		return -Calc.eliminateDeadband(mXboxController.getY(Hand.kRight),DEADBAND);
 	}
 	
 	//Intaker
 	public boolean isIntakerManualActivated() {
 		return mXboxController.getBackButton();
 	}
-	
-	public boolean getIntakerTakeIn() {
-		return mXboxController.getAButton();
-	}
-	
-	public boolean getIntakerShootPrep() {
-		return mXboxController.getBButton();
-	}
-	
-
-	public boolean getIntakerProtect() {
-		return mXboxController.getYButton();
-	}
-	
-	public boolean getIntakerResetToVertical(){
-		return mXboxController.getXButton();
-	}
-	
 	
 	public boolean getIntakerAdjustDownwards() {
 		return mXboxController.getStickButton(Hand.kRight);

@@ -52,17 +52,10 @@ public class IntakerController extends BaseController{
 	public void runTeleOp() {
 		mIntaker.setIsManual(mOI.isIntakerManualActivated());
 		if(!mOI.isIntakerManualActivated()) {
-			if(mOI.getIntakerResetToVertical()) {
-				mIntaker.resetToVertical();
-			}else if(mOI.getIntakerProtect()) {
-				mIntaker.gotoVertical();
-			}else if(mOI.getIntakerShootPrep()) {
-				mIntaker.gotoShootPitch();
-			}else if(mOI.getIntakerTakeIn()) {
-				mIntaker.gotoHorizontal();
-			}else if(mOI.getIntakerAdjustDownwards()) {
+			
+		}if(mOI.getIntakerAdjustDownwards()) {
 				mIntaker.adjustDownwards();
-			}
+			
 		}else {
 			mIntaker.setRawIntakerPitch(mOI.getIntakerPitchSpeed());
 		}		

@@ -51,7 +51,7 @@ public class Elevator implements PIDSource,PIDOutput{
 		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
-		mPIDController=new PIDController(2.4, 0.002,0.01,this,this);
+		mPIDController=new PIDController(2.8, 0.002,0.02,this,this);
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);

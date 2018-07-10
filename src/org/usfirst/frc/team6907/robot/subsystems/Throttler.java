@@ -53,6 +53,13 @@ public class Throttler implements PIDSource,PIDOutput{
 		mLastTime=System.currentTimeMillis();
 	}
 	
+	public void startPID() {
+		if(!mPIDEnabled) {	
+			mPIDEnabled=true;
+			mPIDController.enable();
+		}
+	}
+	
 	public void gotoRelativePos(double deltaPos) {
 		gotoPos(pidGet()+deltaPos);
 	}
