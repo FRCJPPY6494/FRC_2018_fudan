@@ -2,6 +2,8 @@ package org.usfirst.frc.team6907.robot.subsystems;
 
 import org.usfirst.frc.team6907.robot.RobotMap;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
+import org.usfirst.frc.team6907.robot.controller.ThrottlerController;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -52,10 +54,10 @@ public class Throttler implements PIDSource,PIDOutput{
 		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
-		mPIDController=new PIDController(2.8, 0.2, 1.2,this,this);
+		mPIDController=new PIDController(0.1, 0.002, 0.02,this,this);
 		mPIDEnabled=true;	
 		mPIDController.enable();
-		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
+		mPIDController.setSetpoint(ThrottlerController.THROTTLER_ZERO);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();
 		mTalon.configContinuousCurrentLimit((int) amps,  (int) timeoutMs);

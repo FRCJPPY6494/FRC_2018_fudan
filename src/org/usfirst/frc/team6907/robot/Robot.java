@@ -13,6 +13,7 @@ import org.usfirst.frc.team6907.robot.controller.ElevatorController;
 import org.usfirst.frc.team6907.robot.controller.IntakerController;
 import org.usfirst.frc.team6907.robot.controller.ThrottlerController;
 import org.usfirst.frc.team6907.robot.devices.Camera;
+import org.usfirst.frc.team6907.robot.subsystems.AmpsMonitor;
 import org.usfirst.frc.team6907.robot.subsystems.Climber;
 import org.usfirst.frc.team6907.robot.subsystems.Drive;
 import org.usfirst.frc.team6907.robot.subsystems.DriveOI;
@@ -30,6 +31,7 @@ public class Robot extends TimedRobot {
 	private static int POS=MIDDLE; 
 	
 	private long mAutoStartTime;
+	private AmpsMonitor ampsMonitor;
 	
 	
 	private static String mPosDat;
@@ -37,6 +39,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		/**Initialize camera*/
+		
 		Camera.start(160,120,20);
 		Camera.start(160,120,20);
 		DriveController.get();
@@ -76,6 +79,8 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		//ampsMonitor = new AmpsMonitor();
+		//ampsMonitor.run();
 		DriveController.get().stopAuto();
 		ElevatorController.get().stopAuto();
 		IntakerController.get().stopAuto();
