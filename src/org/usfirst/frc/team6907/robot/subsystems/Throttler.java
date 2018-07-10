@@ -29,7 +29,7 @@ public class Throttler implements PIDSource,PIDOutput{
 			SLOW_BOUND_VELOCITY=0.13;
 			
 	private static final double MOTOR_DIRECTION=-1;
-	private static final boolean INVERTED=true;
+	private static final boolean INVERTED=false;
 	
 	private double amps = 30;
 	private int timeoutMs = 10;
@@ -52,7 +52,7 @@ public class Throttler implements PIDSource,PIDOutput{
 		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
-		mPIDController=new PIDController(2.8, 0.002,0.02,this,this);
+		mPIDController=new PIDController(2.8, 0.2, 1.2,this,this);
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
