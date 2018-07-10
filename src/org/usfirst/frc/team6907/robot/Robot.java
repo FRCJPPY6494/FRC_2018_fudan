@@ -6,16 +6,11 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team6907.robot;
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6907.robot.controller.ClimberController;
 import org.usfirst.frc.team6907.robot.controller.DriveController;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
 import org.usfirst.frc.team6907.robot.controller.IntakerController;
 import org.usfirst.frc.team6907.robot.controller.ThrottlerController;
-import org.usfirst.frc.team6907.robot.devices.Camera;
 import org.usfirst.frc.team6907.robot.subsystems.Climber;
 import org.usfirst.frc.team6907.robot.subsystems.Drive;
 import org.usfirst.frc.team6907.robot.subsystems.DriveOI;
@@ -24,8 +19,6 @@ import org.usfirst.frc.team6907.robot.subsystems.Intaker;
 import org.usfirst.frc.team6907.robot.subsystems.OperateOI;
 import org.usfirst.frc.team6907.robot.subsystems.Throttler;
 
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
