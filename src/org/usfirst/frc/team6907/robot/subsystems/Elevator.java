@@ -2,7 +2,6 @@ package org.usfirst.frc.team6907.robot.subsystems;
 
 import org.usfirst.frc.team6907.robot.RobotMap;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
-import org.usfirst.frc.team6907.robot.devices.ArduinoLEDStrip;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
