@@ -6,7 +6,10 @@
 /*----------------------------------------------------------------------------*/
 
 package org.usfirst.frc.team6907.robot;
-
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team6907.robot.controller.ClimberController;
 import org.usfirst.frc.team6907.robot.controller.DriveController;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
@@ -21,11 +24,16 @@ import org.usfirst.frc.team6907.robot.subsystems.Intaker;
 import org.usfirst.frc.team6907.robot.subsystems.OperateOI;
 import org.usfirst.frc.team6907.robot.subsystems.Throttler;
 
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 
 
 public class Robot extends TimedRobot {
+	Thread m_visionThread;
 	public static final int LEFT=0, MIDDLE=1, RIGHT=2;
 	private static int POS=MIDDLE; 
 	
@@ -36,9 +44,20 @@ public class Robot extends TimedRobot {
 	
 	@Override
 	public void robotInit() {
+		//m_visionThread = new Thread(() -> {
+			UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture();
+			UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture();
+			camera1.setResolution(320, 240);
+			camera1.setFPS(24);
+			//camera1.setBrightness(brightness);
+			camera2.setResolution(320, 240);
+			camera2.setFPS(24);
+		//});
+		//m_visionThread.setDaemon(true);
+		//m_visionThread.start();
 		/**Initialize camera*/
-		Camera.start(160,120,20);
-		Camera.start(160,120,20);
+		//Camera.start(160,120,20);
+		//Camera.start(160,120,20);
 		DriveController.get();
 		ElevatorController.get();
 		IntakerController.get();
