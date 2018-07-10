@@ -35,6 +35,9 @@ public class Elevator implements PIDSource,PIDOutput{
 	private PIDController mPIDController;
 	private boolean mPIDEnabled;
 	
+	private double amps = 30;
+	private int timeoutMs = 10;
+	
 	private volatile double mLastSpeed;
 	private volatile long mLastTime;
 		
@@ -55,6 +58,9 @@ public class Elevator implements PIDSource,PIDOutput{
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();
+		mTalon.configContinuousCurrentLimit((int) amps,  (int) timeoutMs);
+		mTalon.enableCurrentLimit(true);
+		
 	}
 	
 	public void reset() {

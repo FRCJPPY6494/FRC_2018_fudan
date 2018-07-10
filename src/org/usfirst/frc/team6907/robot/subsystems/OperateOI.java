@@ -106,6 +106,11 @@ public class OperateOI {
 		return mXboxController.getBackButton();
 	}
 	
+	public boolean isThrottlerManualActivated() {
+		return mXboxController.getBackButton();
+	}
+	
+	
 	public boolean getIntakerAdjustDownwards() {
 		return mXboxController.getStickButton(Hand.kRight);
 	}

@@ -31,6 +31,9 @@ public class Throttler implements PIDSource,PIDOutput{
 	private static final double MOTOR_DIRECTION=-1;
 	private static final boolean INVERTED=true;
 	
+	private double amps = 30;
+	private int timeoutMs = 10;
+	
 	private WPI_TalonSRX mTalon;
 	private PIDController mPIDController;
 	private boolean mPIDEnabled;
@@ -55,6 +58,8 @@ public class Throttler implements PIDSource,PIDOutput{
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();
+		mTalon.configContinuousCurrentLimit((int) amps,  (int) timeoutMs);
+		mTalon.enableCurrentLimit(true);
 	}
 	
 	public void reset() {
@@ -169,10 +174,6 @@ public class Throttler implements PIDSource,PIDOutput{
 	
 	private boolean isSensorPluggedIn() {
 		return mTalon.getSensorCollection().getPulseWidthRiseToRiseUs()!=0;	
-	}
-	
-	public void log() {
-		SmartDashboard.putNumber("Elevator.Height", pidGet());
 	}
 	
 	/*
