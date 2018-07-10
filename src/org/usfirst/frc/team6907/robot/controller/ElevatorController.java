@@ -10,10 +10,10 @@ public class ElevatorController extends BaseController{
 	
 	public static final double 
 			HEIGHT_ZERO=0.01,
-			HEIGHT_SWITCH=0.6,
-			HEIGHT_SCALE_LOW=1.4,
-			HEIGHT_SCALE_MIDDLE=1.65,
-			HEIGHT_SCALE_HIGH=1.85;
+			HEIGHT_SWITCH=0.3,
+			HEIGHT_SCALE_LOW=0.7,
+			HEIGHT_SCALE_MIDDLE=0.85,
+			HEIGHT_SCALE_HIGH=0.90;
 	
 	public static final double
 			HEIGHT_MANUAL_ADJUST=0.1;
@@ -45,7 +45,7 @@ public class ElevatorController extends BaseController{
 			mCmds.add(new GotoPosCmd(13000, HEIGHT_ZERO));
 		}else if(pos==Robot.LEFT){
 			if(left) {
-				
+				 
 			}else {
 				
 			}

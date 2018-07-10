@@ -45,8 +45,6 @@ public class Intaker {
 	
 	private static Intaker sIntaker;	
 	
-	private Photogate mPhotogate;
-	private Spark mSpark;
 	private WPI_TalonSRX mTalon;
 	
 	private Timer mTimer;
@@ -67,8 +65,6 @@ public class Intaker {
 	}
 	
 	public Intaker() {
-		mPhotogate=new Photogate(RobotMap.INTAKER_PHOTOGATE);
-		mSpark=new Spark(RobotMap.INTAKER_SPARK);
 		mTalon=new WPI_TalonSRX(RobotMap.INTAKER_TALON);
 		mTalon.setSafetyEnabled(true);
 		mTalon.setExpiration(EXPIRATION);
@@ -104,13 +100,11 @@ public class Intaker {
 	
 	public void stopMotor() {
 		mCommand.stop();
-		mSpark.stopMotor();
 		mTalon.stopMotor();
 	}	
 	
 	public void feedStop() {
 		mCommand.stop();
-		mSpark.set(0);
 		mTalon.set(ControlMode.PercentOutput,0);
 	}
 	
@@ -176,7 +170,7 @@ public class Intaker {
 	}
 	
 	public void setRawIntakerSpeed(double speed) {
-		mSpark.set(speed);
+		mTalon.set(speed);
 	}
 	
 	private class GotoVerticalCmd extends Command{	
@@ -195,9 +189,9 @@ public class Intaker {
 				return;
 			}
 			if(!mHasVerticalReached) {
-				if (getTime()<RUN_TIME_VERTICAL || mPhotogate.isBlocked()) {
+				if (getTime()<RUN_TIME_VERTICAL) {
 					mTalon.set(PITCH_SPEED_GOTO_VERTICAL*INTAKER_PITCH_DIRECTION);
-				}else if(!mPhotogate.isBlocked()) {
+				}else {
 					mHasVerticalReached=true;
 					mTimeStart=System.currentTimeMillis();
 				}
@@ -228,9 +222,9 @@ public class Intaker {
 				return;
 			}
 			if(!mHasVerticalReached) {
-				if (getTime()<RUN_TIME_VERTICAL || mPhotogate.isBlocked()) {
+				if (getTime()<RUN_TIME_VERTICAL) {
 					mTalon.set(SLOW_PITCH_SPEED*INTAKER_PITCH_DIRECTION);
-				}else if(!mPhotogate.isBlocked()) {
+				}else  {
 					mHasVerticalReached=true;
 					mTimeStart=System.currentTimeMillis();
 				}
@@ -257,9 +251,9 @@ public class Intaker {
 			super.run();
 			if (getTime()<MAX_RUN_TIME_GOTO_HORIZONTAL) { 
 				if(!mHasHorizontalReached) {
-					if (getTime()<RUN_TIME_GOTO_BLOCKED || mPhotogate.isBlocked()) {
+					if (getTime()<RUN_TIME_GOTO_BLOCKED) {
 						mTalon.set(-PITCH_SPEED_GOTO_HORIZONTAL*INTAKER_PITCH_DIRECTION);
-					}else if(!mPhotogate.isBlocked()) {
+					}else {
 						mHasHorizontalReached=true;
 						mTimeStart=System.currentTimeMillis();
 					}
@@ -305,6 +299,5 @@ public class Intaker {
 	}
 	
 	public void log() {
-		mPhotogate.log();
 	}
 }

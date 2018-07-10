@@ -1,13 +1,14 @@
 package org.usfirst.frc.team6907.robot.subsystems;
 
 import org.usfirst.frc.team6907.robot.RobotMap;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -34,7 +35,7 @@ public class Drive implements PIDSource,PIDOutput{
 	private static Drive sInstance;
 	
 	private DifferentialDrive mDifferentialDrive;
-	private Spark mSparkL,mSparkR;
+	private WPI_VictorSPX mRearLeft, mFrontLeft, mRearRight, mFrontRight;
 	private ADXRS450_Gyro mGyro;
 	
 	private double mLastSpeed;
@@ -54,9 +55,14 @@ public class Drive implements PIDSource,PIDOutput{
 	public Drive() {
 		mGyro=new ADXRS450_Gyro();
 		mGyro.setPIDSourceType(PIDSourceType.kDisplacement);
-		mSparkL=new Spark(RobotMap.DRIVE_MOTOR_LEFT);
-		mSparkR=new Spark(RobotMap.DRIVE_MOTOR_RIGHT);
-		mDifferentialDrive=new DifferentialDrive(mSparkL,mSparkR);
+		mRearLeft = new WPI_VictorSPX(RobotMap.BACK_LEFT);
+		mFrontLeft = new WPI_VictorSPX(RobotMap.FRONT_LEFT);
+		SpeedControllerGroup mLeft = new SpeedControllerGroup(mFrontLeft, mRearLeft);
+		
+		mRearRight = new WPI_VictorSPX(RobotMap.BACK_RIGHT);
+		mFrontRight = new WPI_VictorSPX(RobotMap.FRONT_RIGHT);
+		SpeedControllerGroup mRight = new SpeedControllerGroup(mFrontRight, mRearRight);
+		mDifferentialDrive=new DifferentialDrive(mLeft,mRight);
 	
 		mPidController=new PIDController(0.06,0,0.002,mGyro,this);
 		mPidController.setOutputRange(-MAX_PID_OUTPUT,MAX_PID_OUTPUT);

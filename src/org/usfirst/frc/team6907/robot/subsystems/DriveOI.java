@@ -12,8 +12,8 @@ public class DriveOI {
 			DEADBAND=0.065, 
 			SLOW_GEAR=0.45,
 			NORMAL_GEAR=0.75,
-			TURN_SENSITIVITY=0.4,
-			TURN_SENSITIVITY_SLOW=0.2,
+			TURN_SENSITIVITY=0.25,
+			TURN_SENSITIVITY_SLOW=0.1,
 			TRIGGER_BOUND=0.1;
 			
 	public static final int
@@ -39,12 +39,12 @@ public class DriveOI {
 	}
 	
 	public double getSpeed() {
-		double speed=-Calc.eliminateDeadband(mController.getY(Hand.kLeft),DEADBAND);
+		double speed=-Calc.eliminateDeadband(mController.getY(Hand.kLeft),DEADBAND)*0.85;
 		return speed*getGear();
 	}
 	
 	public double getTurn() {
-		double turn=Calc.eliminateDeadband(mController.getX(Hand.kRight),DEADBAND);
+		double turn=Calc.eliminateDeadband(mController.getX(Hand.kRight),DEADBAND)*0.7;
 		if(getGear()==SLOW_GEAR)return turn*TURN_SENSITIVITY_SLOW;
 		return turn*TURN_SENSITIVITY;
 	}

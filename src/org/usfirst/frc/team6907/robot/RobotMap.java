@@ -22,11 +22,14 @@ public class RobotMap {
 	
 	
 	public static final int
-			DRIVE_MOTOR_LEFT=0,	
-			DRIVE_MOTOR_RIGHT=1,
-			INTAKER_SPARK=2,		
 			CLIMBER_SPARK=3,	
 			CLIMBER_VICTOR=4;	
+	
+    public final static int FRONT_RIGHT = 5;
+    public final static int FRONT_LEFT = 2;
+    public final static int BACK_RIGHT = 3;
+    public final static int BACK_LEFT = 4;
+    public final static int DEPLOYMENT_MOTOR = 6;
 
 	public static final int	
 			INTAKER_PHOTOGATE=0;
