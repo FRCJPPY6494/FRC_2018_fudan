@@ -49,6 +49,7 @@ public class ThrottlerController extends BaseController{
 	}
 	
 	public void runTeleOp() {
+		System.out.println(mThrottler.pidGet());
 		if(!mOI.isThrottlerManualActivated()) {
 			if(mLastManual) {
 				mThrottler.setStatic();
@@ -64,7 +65,8 @@ public class ThrottlerController extends BaseController{
 					case OperateOI.THROTTLER_HORIZONTAL:
 						mThrottler.gotoPos(THROTTLER_HORIZONTAL);
 						break;
-					
+					default:
+						break;
 				}
 				if(Math.abs(mOI.getThrottlerSpeed())>EPS 
 						&& !mLastManualAdjust) {

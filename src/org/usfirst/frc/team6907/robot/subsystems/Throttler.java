@@ -54,14 +54,13 @@ public class Throttler implements PIDSource,PIDOutput{
 		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
-		mPIDController=new PIDController(0.1, 0.002, 0.02,this,this);
+		// TODO Change the I variable
+		mPIDController=new PIDController(3, 0.002,10, this,this); //1, 0.001, 2
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(ThrottlerController.THROTTLER_ZERO);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();
-		mTalon.configContinuousCurrentLimit((int) amps,  (int) timeoutMs);
-		mTalon.enableCurrentLimit(true);
 	}
 	
 	public void reset() {

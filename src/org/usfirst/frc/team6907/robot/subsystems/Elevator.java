@@ -2,6 +2,7 @@ package org.usfirst.frc.team6907.robot.subsystems;
 
 import org.usfirst.frc.team6907.robot.RobotMap;
 import org.usfirst.frc.team6907.robot.controller.ElevatorController;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -19,8 +20,8 @@ public class Elevator implements PIDSource,PIDOutput{
 			MAX_ACCELERATION_PER_MS=0.0015,	
 			MAX_ACCELERATION_DISCRETE=0.1,		
 			MAX_POWER=0.8,
-			MAX_POWER_MANUAL_UP=0.6,
-			MAX_POWER_MANUAL_DOWN=0.3,
+			MAX_POWER_MANUAL_UP=0.7,
+			MAX_POWER_MANUAL_DOWN=0.4,
 			HEIGHT_PER_ROTATION=0.06,
 			GEAR=3,	
 			SIGNALS_PER_ROTATION=4096,
@@ -31,12 +32,15 @@ public class Elevator implements PIDSource,PIDOutput{
 	private static final double MOTOR_DIRECTION=-1;
 	private static final boolean INVERTED=true;
 	
+	private static final int		
+			PEAK_CURRENT_LIMIT=80,
+			PEAK_CURRENT_DURATION=200,
+			CONTINUOUS_CURRENT_LIMIT=30;
+	
 	private WPI_TalonSRX mTalon;
 	private PIDController mPIDController;
-	private boolean mPIDEnabled;
 	
-	private double amps = 30;
-	private int timeoutMs = 10;
+	private boolean mPIDEnabled;
 	
 	private volatile double mLastSpeed;
 	private volatile long mLastTime;
@@ -52,15 +56,12 @@ public class Elevator implements PIDSource,PIDOutput{
 		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
-		mPIDController=new PIDController(2.8, 0.002,0.02,this,this);
+		mPIDController=new PIDController(3, 0.002,0,this,this);
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();
-		mTalon.configContinuousCurrentLimit((int) amps,  (int) timeoutMs);
-		mTalon.enableCurrentLimit(true);
-		
 	}
 	
 	public void reset() {
@@ -83,7 +84,7 @@ public class Elevator implements PIDSource,PIDOutput{
 	
 	public void manualControl(double input) {
 		input*=(input>0)?MAX_POWER_MANUAL_UP:MAX_POWER_MANUAL_DOWN;
-		setSpeed(input);
+		setSpeed(boundSpeed(boundAcceleration(input)));
 	}
 	
 	public void setStatic() {
@@ -180,18 +181,5 @@ public class Elevator implements PIDSource,PIDOutput{
 	public void log() {
 		SmartDashboard.putNumber("Elevator.Height", pidGet());
 	}
-	
-	/*
-	private void setLED() {
-		double speed=signalToMeter(mTalon.getSelectedSensorVelocity(0));
-		if(Math.abs(speed)<0.003) {
-			mLED.setMode(ArduinoLEDStrip.MODE_NORMAL);
-		}else if (speed>0) {
-			mLED.setMode(ArduinoLEDStrip.MODE_ELEVATE_UP);
-		}else {
-			mLED.setMode(ArduinoLEDStrip.MODE_ELEVATE_DOWN);
-		}
-	}
-}
-*/
+
 }
