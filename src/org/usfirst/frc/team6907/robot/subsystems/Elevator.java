@@ -96,6 +96,7 @@ public class Elevator implements PIDSource,PIDOutput{
 	}	
 	
 	public void feedStop() {
+		mPIDController.reset();
 		mTalon.set(ControlMode.PercentOutput,0);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();

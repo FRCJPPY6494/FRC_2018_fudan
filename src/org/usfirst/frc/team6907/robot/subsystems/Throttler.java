@@ -55,10 +55,10 @@ public class Throttler implements PIDSource,PIDOutput{
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
 		// TODO Change the I variable
-		mPIDController=new PIDController(3, 0.002,10, this,this); //1, 0.001, 2
+		mPIDController=new PIDController(10, 0.004,10, this,this); //1, 0.001, 2
 		mPIDEnabled=true;	
 		mPIDController.enable();
-		mPIDController.setSetpoint(ThrottlerController.THROTTLER_ZERO);
+		mPIDController.setSetpoint(0);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();
 	}
@@ -95,6 +95,7 @@ public class Throttler implements PIDSource,PIDOutput{
 	}	
 	
 	public void feedStop() {
+		mPIDController.reset();
 		mTalon.set(ControlMode.PercentOutput,0);
 		mLastSpeed=0;
 		mLastTime=System.currentTimeMillis();

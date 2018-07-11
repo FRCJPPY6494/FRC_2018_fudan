@@ -9,10 +9,12 @@ import org.usfirst.frc.team6907.robot.subsystems.Throttler;
 public class ThrottlerController extends BaseController{
 	private static final double EPS=0.001;
 	
+	private final static double _zeroPosition = 0;
+	private final static double _delta = 0.045;
 	public static final double 
-			THROTTLER_ZERO = 0.1,
-			THROTTLER_LAUNCH = 0.2,
-			THROTTLER_HORIZONTAL = 0.3;
+			THROTTLER_ZERO = _zeroPosition + 0.09,       //0.09
+			THROTTLER_LAUNCH = _zeroPosition + 0.055,      //0.055
+			THROTTLER_HORIZONTAL = _zeroPosition + 0.00;
 	
 	public static final double
 			HEIGHT_MANUAL_ADJUST=0.1;
