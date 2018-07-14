@@ -2,6 +2,7 @@ package org.usfirst.frc.team6494.robot.subsystems;
 
 import org.usfirst.frc.team6494.robot.RobotMap;
 import org.usfirst.frc.team6494.robot.utils.Calc;
+import org.usfirst.frc.team6494.robot.subsystems.OperateOI;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -103,7 +104,7 @@ public class OperateOI {
 	
 	//Intaker
 	public boolean isIntakerManualActivated() {
-		return mXboxController.getBackButton();
+		return true;
 	}
 	
 	public boolean isThrottlerManualActivated() {
@@ -147,6 +148,13 @@ public class OperateOI {
 		return isModeClimb() && mXboxController.getBButton();
 	}
 	
+	public double getManualRelaxSpeed() {
+		if(isModeClimb()) {
+			return mXboxController.getY(Hand.kRight)*0.4;
+		}
+		return 0;
+	}
+
 	public boolean isTeleOpInputAvailable() {
 		return mXboxController!=null;
 	}

@@ -5,6 +5,9 @@ import org.usfirst.frc.team6494.robot.commands.AutoCmd;
 import org.usfirst.frc.team6494.robot.subsystems.Elevator;
 import org.usfirst.frc.team6494.robot.subsystems.OperateOI;
 import org.usfirst.frc.team6494.robot.subsystems.Throttler;
+import org.usfirst.frc.team6494.robot.controller.BaseController;
+import org.usfirst.frc.team6494.robot.controller.ThrottlerController;
+import org.usfirst.frc.team6494.robot.controller.ThrottlerController.GotoPosCmd;
 
 public class ThrottlerController extends BaseController{
 	private static final double EPS=0.001;
@@ -13,7 +16,7 @@ public class ThrottlerController extends BaseController{
 	private final static double _delta = 0.045;
 	public static final double 
 			THROTTLER_ZERO = _zeroPosition + 0.09,       //0.09
-			THROTTLER_LAUNCH = _zeroPosition + 0.055,      //0.055
+			THROTTLER_LAUNCH = _zeroPosition + 0.065,      //0.065
 			THROTTLER_HORIZONTAL = _zeroPosition + 0.00;
 	
 	public static final double
@@ -41,7 +44,10 @@ public class ThrottlerController extends BaseController{
 	}
 	
 	public void initAuto() {
-		mCmds.add(new GotoPosCmd(1000, THROTTLER_ZERO));
+		mCmds.add(new GotoPosCmd(0, THROTTLER_LAUNCH));
+		mCmds.add(new GotoPosCmd(100, THROTTLER_ZERO+0.01));
+		mCmds.add(new GotoPosCmd(6000, THROTTLER_HORIZONTAL));
+		mCmds.add(new GotoPosCmd(11000, THROTTLER_ZERO));
 	}
 	
 	@Override

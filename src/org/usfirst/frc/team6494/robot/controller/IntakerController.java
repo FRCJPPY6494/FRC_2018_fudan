@@ -5,6 +5,10 @@ import org.usfirst.frc.team6494.robot.commands.AutoCmd;
 import org.usfirst.frc.team6494.robot.commands.Command;
 import org.usfirst.frc.team6494.robot.subsystems.Intaker;
 import org.usfirst.frc.team6494.robot.subsystems.OperateOI;
+import org.usfirst.frc.team6494.robot.controller.BaseController;
+import org.usfirst.frc.team6494.robot.controller.IntakerController;
+import org.usfirst.frc.team6494.robot.controller.IntakerController.PitchCmd;
+import org.usfirst.frc.team6494.robot.controller.IntakerController.ShootCmd;
 
 public class IntakerController extends BaseController{
 	private static IntakerController sInstance;
@@ -25,9 +29,7 @@ public class IntakerController extends BaseController{
 	
 	public void initAuto(int pos, boolean left) {
 		if(pos==Robot.MIDDLE) {
-			mCmds.add(new PitchCmd(6700, PitchCmd.CMD_GOTO_SHOOT_PITCH));
-			mCmds.add(new ShootCmd(7500, 2000));
-			mCmds.add(new PitchCmd(11500, PitchCmd.CMD_RESET_TO_VERTICAL));
+			mCmds.add(new ShootCmd(9800, 2000));
 		}else if (pos==Robot.LEFT) {
 			if(left) {
 				
@@ -111,12 +113,7 @@ public class IntakerController extends BaseController{
 		@Override
 		public void run(long time) {
 			super.run();
-			if(time<mDuration) {
-				Intaker.get().setRawIntakerSpeed(-1);
-			}else{
-				Intaker.get().setRawIntakerSpeed(0);
-			}
-			Intaker.get().setRawIntakerPitch(0);
+			Intaker.get().setRawIntakerSpeed(1);
 		}
 		@Override
 		public void stop() {

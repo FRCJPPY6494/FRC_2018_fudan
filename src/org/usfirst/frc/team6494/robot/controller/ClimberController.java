@@ -26,7 +26,10 @@ public class ClimberController{
 			mClimber.relax();
 		} else if(mOI.getClimberClimb()) {
 			mClimber.climb();
-		}else {
+		} else if(mOI.getManualRelaxSpeed()!=0.0){
+			mClimber.manualrelax(mOI.getManualRelaxSpeed());
+		}
+			else {
 			mClimber.feedStop();
 		}
 	}

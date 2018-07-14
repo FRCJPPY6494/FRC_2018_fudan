@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import org.usfirst.frc.team6494.robot.RobotMap;
 import org.usfirst.frc.team6494.robot.commands.Command;
 import org.usfirst.frc.team6494.robot.devices.Photogate;
+import org.usfirst.frc.team6494.robot.subsystems.Intaker;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;

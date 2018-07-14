@@ -2,6 +2,7 @@ package org.usfirst.frc.team6494.robot.subsystems;
 
 import org.usfirst.frc.team6494.robot.RobotMap;
 import org.usfirst.frc.team6494.robot.controller.ElevatorController;
+import org.usfirst.frc.team6494.robot.subsystems.Elevator;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -56,7 +57,7 @@ public class Elevator implements PIDSource,PIDOutput{
 		mTalon=new WPI_TalonSRX(deviceID);
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
-		mPIDController=new PIDController(3, 0.002,0,this,this);
+		mPIDController=new PIDController(7.0108, 0.008, 2.705,this,this); // P = 7.0108, I = 0.008, D = 2.705 
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(ElevatorController.HEIGHT_ZERO);
@@ -74,7 +75,7 @@ public class Elevator implements PIDSource,PIDOutput{
 			mPIDController.reset();
 			mPIDController.setSetpoint(pos);
 			mPIDEnabled=true;
-			mPIDController.enable();		
+			mPIDController.enable();
 		}
 	}
 	
@@ -168,7 +169,8 @@ public class Elevator implements PIDSource,PIDOutput{
 	private void setSpeed(double speed) {
 		mLastSpeed=speed;
 		mLastTime=System.currentTimeMillis();
-		mTalon.set(ControlMode.PercentOutput,speed*MOTOR_DIRECTION);
+		if(speed < 0) mTalon.set(ControlMode.PercentOutput,speed*MOTOR_DIRECTION*0.35);
+		else mTalon.set(ControlMode.PercentOutput,speed*MOTOR_DIRECTION);
 	}
 
 	private static double signalToMeter(int count) {

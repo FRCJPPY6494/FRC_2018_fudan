@@ -3,6 +3,7 @@ package org.usfirst.frc.team6494.robot.subsystems;
 import org.usfirst.frc.team6494.robot.RobotMap;
 import org.usfirst.frc.team6494.robot.controller.ElevatorController;
 import org.usfirst.frc.team6494.robot.controller.ThrottlerController;
+import org.usfirst.frc.team6494.robot.subsystems.Throttler;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -55,7 +56,7 @@ public class Throttler implements PIDSource,PIDOutput{
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
 		// TODO Change the I variable
-		mPIDController=new PIDController(10, 0.004,10, this,this); //1, 0.001, 2
+		mPIDController=new PIDController(10, 0.04,10, this,this); //1, 0.001, 2
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(0);

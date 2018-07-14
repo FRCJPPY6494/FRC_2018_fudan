@@ -2,6 +2,7 @@ package org.usfirst.frc.team6494.robot.subsystems;
 
 import org.usfirst.frc.team6494.robot.RobotMap;
 import org.usfirst.frc.team6494.robot.utils.Calc;
+import org.usfirst.frc.team6494.robot.subsystems.DriveOI;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -39,12 +40,12 @@ public class DriveOI {
 	}
 	
 	public double getSpeed() {
-		double speed=-Calc.eliminateDeadband(mController.getY(Hand.kLeft),DEADBAND)*0.85;
+		double speed=-Calc.eliminateDeadband(mController.getY(Hand.kLeft),DEADBAND)*0.95;
 		return speed*getGear();
 	}
 	
 	public double getTurn() {
-		double turn=Calc.eliminateDeadband(mController.getX(Hand.kRight),DEADBAND)*0.7;
+		double turn=Calc.eliminateDeadband(mController.getX(Hand.kRight),DEADBAND)*0.85;
 		if(getGear()==SLOW_GEAR)return turn*TURN_SENSITIVITY_SLOW;
 		return turn*TURN_SENSITIVITY;
 	}

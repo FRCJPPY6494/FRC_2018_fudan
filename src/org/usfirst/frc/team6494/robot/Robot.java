@@ -12,7 +12,6 @@ import org.usfirst.frc.team6494.robot.controller.DriveController;
 import org.usfirst.frc.team6494.robot.controller.ElevatorController;
 import org.usfirst.frc.team6494.robot.controller.IntakerController;
 import org.usfirst.frc.team6494.robot.controller.ThrottlerController;
-import org.usfirst.frc.team6494.robot.devices.Camera;
 import org.usfirst.frc.team6494.robot.subsystems.AmpsMonitor;
 import org.usfirst.frc.team6494.robot.subsystems.Climber;
 import org.usfirst.frc.team6494.robot.subsystems.Drive;
@@ -22,6 +21,8 @@ import org.usfirst.frc.team6494.robot.subsystems.Intaker;
 import org.usfirst.frc.team6494.robot.subsystems.OperateOI;
 import org.usfirst.frc.team6494.robot.subsystems.Throttler;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 
@@ -39,26 +40,32 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		/**Initialize camera*/
-		
-		Camera.start(160,120,20);
-		Camera.start(160,120,20);
+
+		UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture();
+		UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture();
+		camera1.setResolution(320, 240);
+		camera1.setFPS(30);
+		camera2.setResolution(320, 240);
+		camera2.setFPS(30);
 		DriveController.get();
 		ElevatorController.get();
 		IntakerController.get();
 		ClimberController.get();
 		ThrottlerController.get();
+		
 	}
 
 	@Override
 	public void autonomousInit() {
-		mPosDat = DriverStation.getInstance().getGameSpecificMessage();
+		mPosDat = "MIDDLE"; /*DriverStation.getInstance().getGameSpecificMessage();*/
 		if(mPosDat.length() > 0){
-			boolean isLeft;
+			//boolean isLeft;
 			if(POS==MIDDLE) {
-				isLeft=(mPosDat.charAt(0) == 'L');
+				//isLeft=(mPosDat.charAt(0) == 'L');
 			}else {
-				isLeft=(mPosDat.charAt(1) == 'L');
+				//isLeft=(mPosDat.charAt(1) == 'L');
 			}
+			boolean isLeft = true;
 			DriveController.get().initAuto(POS,isLeft);
 			IntakerController.get().initAuto(POS,isLeft);
 			ElevatorController.get().initAuto(POS,isLeft);

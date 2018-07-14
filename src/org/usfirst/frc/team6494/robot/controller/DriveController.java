@@ -5,6 +5,11 @@ import org.usfirst.frc.team6494.robot.commands.AutoCmd;
 import org.usfirst.frc.team6494.robot.commands.Command;
 import org.usfirst.frc.team6494.robot.subsystems.Drive;
 import org.usfirst.frc.team6494.robot.subsystems.DriveOI;
+import org.usfirst.frc.team6494.robot.controller.BaseController;
+import org.usfirst.frc.team6494.robot.controller.DriveController;
+import org.usfirst.frc.team6494.robot.controller.DriveController.DriveAlignCmd;
+import org.usfirst.frc.team6494.robot.controller.DriveController.DriveCmd;
+import org.usfirst.frc.team6494.robot.controller.DriveController.TurnToCmd;
 
 public class DriveController extends BaseController{
 	private static final double EPS=0.00001;
@@ -41,16 +46,16 @@ public class DriveController extends BaseController{
 				mCmds.add(new DriveCmd(1900, 0.74,1100));
 				mCmds.add(new TurnToCmd(3000, 0));
 				mCmds.add(new DriveCmd(4500, 0.7, 500));
-				mCmds.add(new DriveCmd(5000, 0.45, 3000));
-				mCmds.add(new DriveCmd(9000, -0.5, 2000));
+				//mCmds.add(new DriveCmd(9000, 0.45, 3000));//5000
+				mCmds.add(new DriveCmd(11000, -0.5, 2000));//9000
 			}else {
 				mCmds.add(new DriveCmd(0, 0.6, 400));
 				mCmds.add(new TurnToCmd(400, 70));
 				mCmds.add(new DriveCmd(2000, 0.7,1100));
 				mCmds.add(new TurnToCmd(3000, 0));
 				mCmds.add(new DriveCmd(4500, 0.7, 500));
-				mCmds.add(new DriveCmd(5000, 0.45, 3000));
-				mCmds.add(new DriveCmd(9000, -0.5, 2000));
+				//mCmds.add(new DriveCmd(9000, 0.45, 3000));//5000
+				mCmds.add(new DriveCmd(11000, -0.5, 2000));//9000
 			}
 		}else if(pos==Robot.LEFT) {
 			if(left) {

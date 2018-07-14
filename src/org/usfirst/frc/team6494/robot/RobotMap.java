@@ -22,9 +22,9 @@ public class RobotMap {
 	
 	
 	public static final int
-			CLIMBER_SPARK=3,	
-			CLIMBER_VICTOR=4;	
-	
+			CLIMBER_SPARK=7,	
+			CLIMBER_VICTOR=9;	
+
     public final static int FRONT_RIGHT = 5;
     public final static int FRONT_LEFT = 2;
     public final static int BACK_RIGHT = 3;

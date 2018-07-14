@@ -4,15 +4,18 @@ import org.usfirst.frc.team6494.robot.Robot;
 import org.usfirst.frc.team6494.robot.commands.AutoCmd;
 import org.usfirst.frc.team6494.robot.subsystems.Elevator;
 import org.usfirst.frc.team6494.robot.subsystems.OperateOI;
+import org.usfirst.frc.team6494.robot.controller.BaseController;
+import org.usfirst.frc.team6494.robot.controller.ElevatorController;
+import org.usfirst.frc.team6494.robot.controller.ElevatorController.GotoPosCmd;
 
 public class ElevatorController extends BaseController{
 	private static final double EPS=0.001;
 	
 	public static final double 
 			HEIGHT_ZERO=0.01,
-			HEIGHT_SWITCH=0.3,
-			HEIGHT_SCALE_LOW=0.6,
-			HEIGHT_SCALE_MIDDLE=0.7,
+			HEIGHT_SWITCH=0.21,
+			HEIGHT_SCALE_LOW=0.65,
+			HEIGHT_SCALE_MIDDLE=0.75,
 			HEIGHT_SCALE_HIGH=0.8;
 	
 	public static final double
@@ -42,7 +45,7 @@ public class ElevatorController extends BaseController{
 	public void initAuto(int pos, boolean left) {
 		if(pos==Robot.MIDDLE) {
 			mCmds.add(new GotoPosCmd(4000, HEIGHT_SWITCH));
-			mCmds.add(new GotoPosCmd(13000, HEIGHT_ZERO));
+			mCmds.add(new GotoPosCmd(14000, HEIGHT_ZERO));
 		}else if(pos==Robot.LEFT){
 			if(left) {
 				
