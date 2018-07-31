@@ -27,22 +27,13 @@ public class IntakerController extends BaseController{
 		mIntaker=Intaker.get();
 	}
 	
-	public void initAuto(int pos, boolean left) {
-		if(pos==Robot.MIDDLE) {
-			mCmds.add(new ShootCmd(9800, 2000));
-		}else if (pos==Robot.LEFT) {
-			if(left) {
-				
-			}else {
-				
-			}
-		}else {
-			if(left) {
-				
-			}else {
-				
-			}
+	public void initAuto(int rPos, int sPos) {
+		if(rPos==Robot.MIDDLE&&sPos!=Robot.NONE) {
+			mCmds.add(new ShootCmd(6000, 5000));
+		}else if(rPos==sPos) {
+			mCmds.add(new ShootCmd(6500, 2000));//TEST
 		}
+		mCmds.add(new StopCmd(9000,2000));
 	}
 	
 	@Override
@@ -114,6 +105,25 @@ public class IntakerController extends BaseController{
 		public void run(long time) {
 			super.run();
 			Intaker.get().setRawIntakerSpeed(1);
+		}
+		@Override
+		public void stop() {
+			super.stop();
+			Intaker.get().feedStop();
+		}
+	}
+	
+	static class StopCmd extends AutoCmd{
+		private long mDuration;
+		public StopCmd(long startTimeStamp,long duration) {
+			super();
+			mStartTimestamp=startTimeStamp;
+			mDuration=duration;
+		}
+		@Override
+		public void run(long time) {
+			super.run();
+			Intaker.get().setRawIntakerSpeed(0);
 		}
 		@Override
 		public void stop() {

@@ -12,8 +12,8 @@ public class DriveOI {
 	private static final double 
 			DEADBAND=0.065, 
 			SLOW_GEAR=0.45,
-			NORMAL_GEAR=0.75,
-			TURN_SENSITIVITY=0.25,
+			NORMAL_GEAR=0.85,
+			TURN_SENSITIVITY=0.35,
 			TURN_SENSITIVITY_SLOW=0.1,
 			TRIGGER_BOUND=0.1;
 			
@@ -40,13 +40,13 @@ public class DriveOI {
 	}
 	
 	public double getSpeed() {
-		double speed=-Calc.eliminateDeadband(mController.getY(Hand.kLeft),DEADBAND)*0.95;
+		double speed=-Calc.eliminateDeadband(mController.getY(Hand.kLeft),DEADBAND);
 		return speed*getGear();
 	}
 	
 	public double getTurn() {
-		double turn=Calc.eliminateDeadband(mController.getX(Hand.kRight),DEADBAND)*0.85;
-		if(getGear()==SLOW_GEAR)return turn*TURN_SENSITIVITY_SLOW;
+		double turn=Calc.eliminateDeadband(mController.getX(Hand.kRight),DEADBAND)*0.9;
+		if(getGear()==SLOW_GEAR)return (scaleInput(turn))*TURN_SENSITIVITY_SLOW;
 		return turn*TURN_SENSITIVITY;
 	}
 	
@@ -84,5 +84,20 @@ public class DriveOI {
 	public void log() {
 		SmartDashboard.putNumber("OI.Drive.Speed",getSpeed());
 		SmartDashboard.putNumber("OI.Drive.Turn",getTurn());
+	}
+	
+	public double scaleInput(double dVal) {
+		double dScale = 0.0;
+		double scaleArray[] = {
+				0.0, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18,
+				0.22, 0.28, 0.34, 0.4, 0.45, 0.50, 0.55,
+				0.6, 0.62, 0.68, 0.75
+		};
+		int index = (int)(dVal * 18);
+		if(index < 0) index = -index;
+		if(index > 18) index = 18;
+		if(dVal < 0) dScale = -scaleArray[index];
+		else dScale = scaleArray[index];
+		return dScale;
 	}
 }

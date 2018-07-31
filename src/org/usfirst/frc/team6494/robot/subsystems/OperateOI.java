@@ -127,9 +127,9 @@ public class OperateOI {
 		}
 		if(mXboxController.getTriggerAxis(Hand.kRight)>TRIGGER_BOUND) {
 			if(mXboxController.getTriggerAxis(Hand.kLeft)<=TRIGGER_BOUND) {
-				return -0.9;	
+				return -1;	
 			}else {
-				return -0.4;	
+				return -0.9;	
 			}
 		}
 		return 0;

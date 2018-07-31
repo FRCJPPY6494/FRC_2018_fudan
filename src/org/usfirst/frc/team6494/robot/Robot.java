@@ -28,8 +28,12 @@ import edu.wpi.first.wpilibj.TimedRobot;
 
 
 public class Robot extends TimedRobot {
-	public static final int LEFT=0, MIDDLE=1, RIGHT=2;
-	private static int POS=MIDDLE; 
+	public static final int NONE=-1, LEFT=0, MIDDLE=1, RIGHT=2;
+	
+	
+	private static int POS=MIDDLE;
+	//**************   ^^^^^^^^^^   *****************//
+	//************SET THIS BEFORE MATCH**************//
 	
 	private long mAutoStartTime;
 	private AmpsMonitor ampsMonitor;
@@ -43,9 +47,9 @@ public class Robot extends TimedRobot {
 
 		UsbCamera camera1 = CameraServer.getInstance().startAutomaticCapture();
 		UsbCamera camera2 = CameraServer.getInstance().startAutomaticCapture();
-		camera1.setResolution(320, 240);
+		camera1.setResolution(160, 120);
 		camera1.setFPS(30);
-		camera2.setResolution(320, 240);
+		camera2.setResolution(160, 120);
 		camera2.setFPS(30);
 		DriveController.get();
 		ElevatorController.get();
@@ -57,20 +61,17 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		mPosDat = "MIDDLE"; /*DriverStation.getInstance().getGameSpecificMessage();*/
+		mPosDat = DriverStation.getInstance().getGameSpecificMessage();
+		int sPosition=NONE;
 		if(mPosDat.length() > 0){
-			//boolean isLeft;
-			if(POS==MIDDLE) {
-				//isLeft=(mPosDat.charAt(0) == 'L');
-			}else {
-				//isLeft=(mPosDat.charAt(1) == 'L');
-			}
-			boolean isLeft = true;
-			DriveController.get().initAuto(POS,isLeft);
-			IntakerController.get().initAuto(POS,isLeft);
-			ElevatorController.get().initAuto(POS,isLeft);
-			ThrottlerController.get().initAuto();
+			if(mPosDat.charAt(0)=='L') sPosition=LEFT;
+			else if(mPosDat.charAt(0)=='R') sPosition=RIGHT;
+			else sPosition=NONE;
 		}
+			DriveController.get().initAuto(POS,sPosition);
+			IntakerController.get().initAuto(POS,sPosition);
+			ElevatorController.get().initAuto(POS,sPosition);
+			ThrottlerController.get().initAuto(POS,sPosition);
 		mAutoStartTime=System.currentTimeMillis();
 	}
 

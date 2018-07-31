@@ -33,71 +33,39 @@ public class DriveController extends BaseController{
 		mLastDriveStraightActivated=false;
 	}
 	
-	public void initAuto(int pos, boolean left) {
+	public void initAuto(int rPos, int sPos) {
 		mDrive.resetGyro();
 		mCmds.clear();
-		//mCmds.add(new DriveCmd(0, 0.8, 2000));
 		
-		//Formal
-		if(pos==Robot.MIDDLE) {
-			if(left) {
-				mCmds.add(new DriveCmd(0, 0.6, 400));
+		if(rPos==Robot.MIDDLE) {
+			if(sPos==Robot.LEFT) {
+				mCmds.add(new DriveCmd(0, 0.7, 400));
 				mCmds.add(new TurnToCmd(400, -70));
-				mCmds.add(new DriveCmd(1900, 0.74,1100));
+				mCmds.add(new DriveCmd(2000, 0.7,1000));
 				mCmds.add(new TurnToCmd(3000, 0));
-				mCmds.add(new DriveCmd(4500, 0.7, 500));
-				//mCmds.add(new DriveCmd(9000, 0.45, 3000));//5000
-				mCmds.add(new DriveCmd(11000, -0.5, 2000));//9000
+				mCmds.add(new DriveCmd(4500, 0.7, 1500));
+				mCmds.add(new DriveCmd(11000, -0.5, 750));//0.6 0.5
 			}else {
-				mCmds.add(new DriveCmd(0, 0.6, 400));
+				mCmds.add(new DriveCmd(0, 0.7, 400));
 				mCmds.add(new TurnToCmd(400, 70));
-				mCmds.add(new DriveCmd(2000, 0.7,1100));
+				mCmds.add(new DriveCmd(2000, 0.7, 1000));
 				mCmds.add(new TurnToCmd(3000, 0));
-				mCmds.add(new DriveCmd(4500, 0.7, 500));
-				//mCmds.add(new DriveCmd(9000, 0.45, 3000));//5000
-				mCmds.add(new DriveCmd(11000, -0.5, 2000));//9000
+				mCmds.add(new DriveCmd(4500, 0.7, 1500));
+				mCmds.add(new DriveCmd(11000, -0.5, 750));
 			}
-		}else if(pos==Robot.LEFT) {
-			if(left) {
-				mCmds.add(new DriveAlignCmd(0, 0.8, 0, 2000));
-				mCmds.add(new TurnToCmd(2100, 90));
-			}else {
-				mCmds.add(new DriveAlignCmd(0, 0.8, 0, 1000));
-				mCmds.add(new TurnToCmd(1050, 90));
-				mCmds.add(new DriveAlignCmd(2600, 0.8, 90, 2500));
-				mCmds.add(new TurnToCmd(5200, 0));
-			}
-		}else if(pos==Robot.RIGHT){
-			if(left) {
-				mCmds.add(new DriveAlignCmd(0, 0.8, 0, 2000));
-				mCmds.add(new TurnToCmd(2100, -90));
-			}else {
-				mCmds.add(new DriveAlignCmd(0, 0.8, 0, 1000));
-				mCmds.add(new TurnToCmd(1050, -90));
-				mCmds.add(new DriveAlignCmd(2600, 0.8, -90, 2500));
-				mCmds.add(new TurnToCmd(5200, 0));
+		}else {
+			mCmds.add(new DriveCmd(0, 0.7, 1500));
+			if(rPos==sPos) {
+				if(rPos==Robot.LEFT) {
+					mCmds.add(new TurnToCmd(3000, 90));
+				}else {
+					mCmds.add(new TurnToCmd(3000, -90));
+				}
+				mCmds.add(new DriveCmd(5000, 0.5, 750));
+				mCmds.add(new DriveCmd(8000, -0.5, 500));
+				mCmds.add(new TurnToCmd(9000, 0));
 			}
 		}
-		/*
-		//Switch && Shoot from side
-		if(!left) {
-			mCmds.add(new DriveCmd(0, 0.6, 400));
-			mCmds.add(new TurnToCmd(500, 45));
-			mCmds.add(new DriveCmd(2000, 0.69, 2000));
-			mCmds.add(new TurnToCmd(4000, 0));
-			mCmds.add(new DriveCmd(6000, 0.63, 1000));
-			mCmds.add(new TurnToCmd(7000, -90));
-			mCmds.add(new DriveCmd(9000, 0.33, 2500));
-		}else {	
-			mCmds.add(new DriveCmd(0, 0.6, 400));
-			mCmds.add(new TurnToCmd(500, -59));
-			mCmds.add(new DriveCmd(2000, 0.65, 3000));
-			mCmds.add(new TurnToCmd(5000, 0));
-			mCmds.add(new DriveCmd(7000, 0.72, 980));
-			mCmds.add(new TurnToCmd(8000, 90));
-			mCmds.add(new DriveCmd(10000, 0.36, 2500));
-		}
-		*/
 	}
 	
 	@Override

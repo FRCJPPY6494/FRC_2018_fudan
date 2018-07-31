@@ -10,7 +10,7 @@ public class Climber {
 	
 	private static final double
 		SPEED_ELEVATE_SPARK=0,
-		SPEED_ELEVATE_VICTOR=0.3,
+		SPEED_ELEVATE_VICTOR=0.3,//0.3
 		SPEED_CLIMB_SPARK=0.7,
 		SPEED_CLIMB_VICTOR=-0.15,
 		SPEED_RELAX_SPARK=-0.35,

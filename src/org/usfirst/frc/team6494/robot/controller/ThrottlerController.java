@@ -15,7 +15,7 @@ public class ThrottlerController extends BaseController{
 	private final static double _zeroPosition = 0;
 	private final static double _delta = 0.045;
 	public static final double 
-			THROTTLER_ZERO = _zeroPosition + 0.09,       //0.09
+			THROTTLER_ZERO = _zeroPosition + 0.10,       //0.09
 			THROTTLER_LAUNCH = _zeroPosition + 0.065,      //0.065
 			THROTTLER_HORIZONTAL = _zeroPosition + 0.00;
 	
@@ -43,11 +43,27 @@ public class ThrottlerController extends BaseController{
 		mLastManualAdjust=false;
 	}
 	
-	public void initAuto() {
-		mCmds.add(new GotoPosCmd(0, THROTTLER_LAUNCH));
-		mCmds.add(new GotoPosCmd(100, THROTTLER_ZERO+0.01));
-		mCmds.add(new GotoPosCmd(6000, THROTTLER_HORIZONTAL));
-		mCmds.add(new GotoPosCmd(11000, THROTTLER_ZERO));
+	public void initAuto(int rPos, int sPos) {
+		if(rPos==Robot.MIDDLE&&sPos!=Robot.NONE) {
+			mCmds.add(new GotoPosCmd(0, THROTTLER_LAUNCH));
+			mCmds.add(new GotoPosCmd(100, THROTTLER_ZERO+0.01));
+			mCmds.add(new GotoPosCmd(5500, THROTTLER_LAUNCH));
+			mCmds.add(new GotoPosCmd(6000, THROTTLER_HORIZONTAL));
+			mCmds.add(new GotoPosCmd(11000, THROTTLER_ZERO));
+		}else if(rPos==sPos) {
+			mCmds.add(new GotoPosCmd(0, THROTTLER_LAUNCH));
+			mCmds.add(new GotoPosCmd(100, THROTTLER_ZERO+0.01));
+			mCmds.add(new GotoPosCmd(6000, THROTTLER_LAUNCH));
+			mCmds.add(new GotoPosCmd(6500, THROTTLER_HORIZONTAL));
+			//mCmds.add(new GotoPosCmd(11000, THROTTLER_ZERO));
+		}else {
+			mCmds.add(new GotoPosCmd(0, THROTTLER_LAUNCH));
+			mCmds.add(new GotoPosCmd(100, THROTTLER_ZERO+0.01));
+			mCmds.add(new GotoPosCmd(1000, THROTTLER_ZERO));
+			if(rPos!=Robot.MIDDLE) {
+				mCmds.add(new GotoPosCmd(5000, THROTTLER_HORIZONTAL));
+			}
+		}
 	}
 	
 	@Override
@@ -79,7 +95,7 @@ public class ThrottlerController extends BaseController{
 				if(Math.abs(mOI.getThrottlerSpeed())>EPS 
 						&& !mLastManualAdjust) {
 					mThrottler.gotoRelativePos(
-							(mOI.getThrottlerSpeed()>0?1:-0.5)*HEIGHT_MANUAL_ADJUST);
+							(mOI.getThrottlerSpeed()>0?1:-0.3)*HEIGHT_MANUAL_ADJUST);
 				}
 				if(!mThrottler.getPIDEnabled()) mThrottler.setStatic();
 			}

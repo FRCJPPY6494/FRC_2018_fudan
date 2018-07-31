@@ -56,7 +56,7 @@ public class Throttler implements PIDSource,PIDOutput{
 		mTalon.setInverted(INVERTED);
 		mTalon.setSelectedSensorPosition(0,0,0);
 		// TODO Change the I variable
-		mPIDController=new PIDController(10, 0.04,10, this,this); //1, 0.001, 2
+		mPIDController=new PIDController(11, 0.04,10, this,this); //1, 0.001, 2
 		mPIDEnabled=true;	
 		mPIDController.enable();
 		mPIDController.setSetpoint(0);
@@ -168,7 +168,8 @@ public class Throttler implements PIDSource,PIDOutput{
 	private void setSpeed(double speed) {
 		mLastSpeed=speed;
 		mLastTime=System.currentTimeMillis();
-		mTalon.set(ControlMode.PercentOutput, speed*MOTOR_DIRECTION);
+		if(speed < 0) mTalon.set(ControlMode.PercentOutput,speed*MOTOR_DIRECTION*0.00);
+		else mTalon.set(ControlMode.PercentOutput,speed*MOTOR_DIRECTION);
 	}
 
 	private static double signalToMeter(int count) {

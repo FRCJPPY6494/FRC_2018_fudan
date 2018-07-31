@@ -13,7 +13,7 @@ public class ElevatorController extends BaseController{
 	
 	public static final double 
 			HEIGHT_ZERO=0.01,
-			HEIGHT_SWITCH=0.21,
+			HEIGHT_SWITCH=0.3,
 			HEIGHT_SCALE_LOW=0.65,
 			HEIGHT_SCALE_MIDDLE=0.75,
 			HEIGHT_SCALE_HIGH=0.8;
@@ -42,21 +42,14 @@ public class ElevatorController extends BaseController{
 		mLastManualAdjust=false;
 	}
 	
-	public void initAuto(int pos, boolean left) {
-		if(pos==Robot.MIDDLE) {
-			mCmds.add(new GotoPosCmd(4000, HEIGHT_SWITCH));
+	public void initAuto(int rPos, int sPos) {
+		if(rPos==Robot.MIDDLE&&sPos!=Robot.NONE) {
+			mCmds.add(new GotoPosCmd(4500, HEIGHT_SWITCH));
 			mCmds.add(new GotoPosCmd(14000, HEIGHT_ZERO));
-		}else if(pos==Robot.LEFT){
-			if(left) {
-				
-			}else {
-				
-			}
-		}else {
-			if(left) {
-				
-			}else {
-				
+		}else{
+			if(rPos==sPos) {
+				mCmds.add(new GotoPosCmd(1500, HEIGHT_SWITCH));//TEST
+				mCmds.add(new GotoPosCmd(12500, HEIGHT_ZERO));
 			}
 		}
 	}
